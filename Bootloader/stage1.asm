@@ -62,19 +62,31 @@ unreal:
     mov si, stage1WelcomeMsg
     call print
 
+    ;; Load the second sector for the stage1
+    mov ah, 0x02            ; BIOS disk read funtion
+    mov al, 1               ; Numbers of sector to reads
+    mov ch, 0               ; Cylinder 0
+    mov cl, 2               ; Sector number to start reading from
+                            ; (1-based indexed)
+    mov dh, 0               ; Head 0
+    mov dl, [boot_disk_number] ; Disk number (HDD = 0x80, Floppy = 0x00)
+    mov bx, 0x7e00          ; Read at
+    int 0x13                ; Disk Read function
+    jc diskReadFailure      ; If carry flag is set means failure
+
     ;; Load the second stage to 0x100000
-    mov ax, 0x1000     ; Load segment address 0x1000 (for 0x100000)
-    mov es, ax         ; Set ES to 0x1000
+    mov ax, 0x1000          ; Load segment address 0x1000 (for 0x100000)
+    mov es, ax              ; Set ES to 0x1000
     mov ah, 0x02            ; BIOS disk read function
     mov al, 2               ; Number of sectors to read
     mov ch, 0               ; Cylinder 0
-    mov cl, 2               ; Sector 2 index(1-based)
+    mov cl, 3               ; Sector number (1-based indexed)
     mov dh, 0               ; Head 0
-    mov dl, [boot_disk_number] ;0x80            ; Drive 0 (floppy)
+    mov dl, [boot_disk_number] ; Drive number (HDD = 0x80, Floppy = 0x00)
     mov bx, 0x0000          ; Offset 0x0000
                             ; Read at [es:offset]
     int 0x13                ; BIOS call to read sector
-    jc diskReadFailure           ; Check for errors
+    jc diskReadFailure      ; Check for errors, if carry flag is set, means failure
 
 
     ; Jump to stage 2
@@ -172,3 +184,5 @@ gdt:
 
 times 510-($-$$) db 0  ; filler for boot sector (Padding)
 dw 0xaa55            ; magic number for boot sector
+
+times 1024 - ($ - $$) db 0

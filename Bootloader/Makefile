@@ -35,7 +35,7 @@ $(DISK_IMG): $(STAGE1_BIN) $(STAGE2_BIN) | $(OUTPUT_DIR)
 	@echo "Creating the disk image..."
 	dd if=/dev/zero of=$@ bs=512 count=2880 2>/dev/null
 	dd if=$(STAGE1_BIN) of=$@ bs=512 conv=notrunc
-	dd if=$(STAGE2_BIN) of=$@ bs=512 seek=1 conv=notrunc
+	dd if=$(STAGE2_BIN) of=$@ bs=512 seek=2 conv=notrunc
 	@echo "Disk image created successfully."
 
 # Run the bootloader in QEMU

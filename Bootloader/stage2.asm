@@ -8,6 +8,10 @@ stage2_entry:
     mov ax, 0x1000       ; Set data segment to 0x1000
     mov ds, ax
     
+    mov ah, 0x0e
+    mov al, 'M'
+    int 0x10
+    
     ;; Print the stage 2 welcome message
     mov si, stage2Msg
     call print
