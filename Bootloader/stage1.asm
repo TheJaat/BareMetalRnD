@@ -88,6 +88,24 @@ unreal:
     int 0x13                ; BIOS call to read sector
     jc diskReadFailure      ; Check for errors, if carry flag is set, means failure
 
+;; jump to stage2
+push 0x1000             ; Push the high 16 bits (segment base) of 0x100000
+push 0x0000             ; Push the offset within that segment (0x0)
+retf 
+;jmp 0x0000:0x0500
+jmp 0x1000:0x0000
+
+;   mov ebx, [dword 0x100074]
+;   add ebx, 0x100000
+;   mov al, 0xcf
+;   mov [ds:gdt + 14], al
+;   mov [ds:gdt + 22], al
+;   lgdt [ds: gdt]
+    lgdt [gdt_ptr]             ; Load the GDT register with the GDT pointer
+    
+    mov eax, 1
+    mov cr0, eax
+    jmp dword 0x8:code32
 
     ; Jump to stage 2
     jmp 0x1000:0x0000       ; Far jump to 0x100000
@@ -98,6 +116,32 @@ push 0x0000             ; Push the offset within that segment (0x0)
 retf 
 jmp $
 
+BITS 32
+code32:
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+    mov ebp, 0x10000
+    mov esp, ebp
+    
+;    mov edi, 0xb8000
+;    mov al, 'X'
+;    mov ah, 0x07
+;    mov [es:edi], ax
+jmp 0x0500
+    jmp 0x08:0x100000
+    call ebx
+    jmp $
+    ; Jump to second stage at 0x100000
+;    jmp 0x1000:0x0000
+
+;    push 0x1000             ; Push the high 16 bits (segment base) of 0x100000
+push 0x0000             ; Push the offset within that segment (0x0)
+retf 
+    ;call ebx
 
 BITS 16
 
@@ -168,6 +212,7 @@ stage1WelcomeMsg: db "Welcome to Stage1", 0
 diskReadErrorMsg: db "Error Reading Disk", 0
 boot_disk_number: db 0
 
+
 gdt:
     ; the first entry serves 2 purposes: as the GDT header and as the first descriptor
     ; note that the first descriptor (descriptor 0) is always a NULL-descriptor
@@ -185,4 +230,19 @@ gdt:
 times 510-($-$$) db 0  ; filler for boot sector (Padding)
 dw 0xaa55            ; magic number for boot sector
 
+
+
+; GDT Descriptor Structure
+gdt_start:
+    dq 0x0                 ; Null descriptor (first entry)
+    dq 0x00CF9A000000FFFF  ; Code segment descriptor (second entry)
+    dq 0x00CF92000000FFFF  ; Data segment descriptor (third entry)
+
+gdt_end:
+
+gdt_ptr:
+    dw gdt_end - gdt_start - 1  ; Limit (size of GDT - 1)
+    dd gdt_start                ; Base address of GDT
 times 1024 - ($ - $$) db 0
+
+
