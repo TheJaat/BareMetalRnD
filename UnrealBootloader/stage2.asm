@@ -1,21 +1,21 @@
+;; Stage2
 [BITS 16]
 [ORG 0x7E00]
-; first instruction adress
 
-; bootloader stage 2 begin
-.start:
+stage2_entry:
+    mov sp, 0x9c00    ; Set up the stack pointer
 
-mov sp, 0x9c00
-; BIOS boot drive in dl
-mov [BOOT_DRIVE], dl
-;mov ax, 0x7E00
-;mov ds, ax
+    ; Store boot drive number
+    mov [BOOT_DRIVE], dl
+    ;mov ax, 0x7E00
+    ;mov ds, ax
 
+    ;; Print Stage 2 Welcome message
+    mov si, WelcomeStage2Message
+    call print
 
-mov si, WelcomeStage1Message
-call print
-
-jmp check
+    ;; jump to second sector of this stage
+    jmp secondSectorCheck
 jmp $
 
 
@@ -65,17 +65,18 @@ print:
         call newline
     popa
 ret
-; =================================================================== ;
-; disk address packet format:                                         ;
-;                                                                     ;
-; Offset | Size | Desc                                                ;
-;      0 |    1 | Packet size                                         ;
-;      1 |    1 | Zero                                                ;
-;      2 |    2 | Sectors to read/write                               ;
-;      4 |    4 | transfer-buffer 0xffff:0xffff                       ;
-;      8 |    4 | lower 32-bits of 48-bit starting LBA                ;
-;     12 |    4 | upper 32-bits of 48-bit starting LBAs               ;
-; =================================================================== ;
+
+;; ********************************************************* ;
+;; disk address packet format:                               ;
+;;                                                           ;
+;; Offset | Size | Desc                                      ;
+;;      0 |    1 | Packet size                               ;
+;;      1 |    1 | Zero                                      ;
+;;      2 |    2 | Sectors to read/write                     ;
+;;      4 |    4 | transfer-buffer 0xffff:0xffff             ;
+;;      8 |    4 | lower 32-bits of 48-bit starting LBA      ;
+;;     12 |    4 | upper 32-bits of 48-bit starting LBAs     ;
+;; ********************************************************* ;
 K_DAP:
 .size:
     db     0x10
@@ -93,21 +94,24 @@ K_DAP:
     dd     0x00000000
 
 
+;; ********************************** ;
+;;  Data Area                         ;
+;; ********************************** ;
 BOOT_DRIVE db 0
-KERNEL_SIZ dd 0
+KERNEL_SIZE dd 0
 VESA_LOADED db 0
 KERNEL_ENTRY dd 0
 KERNEL_ADDRESS dd 0x0100000
 
 
-WelcomeStage1Message: db "Welcome to Stage2", 0
+WelcomeStage2Message: db "Welcome to Stage2", 0
 
+times 512 - ($ - $$) db 0
 
-check:
-
-mov ah, 0x0e
-mov al, 'Z'
-int 0x10
-jmp $
+secondSectorCheck:
+    mov ah, 0x0e
+    mov al, 'Z'
+    int 0x10
+    jmp $
 
 times 1024 - ($ - $$) db 0
