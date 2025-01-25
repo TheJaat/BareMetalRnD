@@ -24,9 +24,10 @@ start:
     ;; Clear the screen
     call ClearScreen
 
-mov ah, 0x0e
-mov al, '1'
-int 0x10
+    ;; Print the stage1 welcome message
+    mov si, WelcomeStage1Message
+    call PrintString16
+jmp $
 
 
 ;; By entering unreal mode, we can access memory beyond
