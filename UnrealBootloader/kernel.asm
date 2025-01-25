@@ -35,4 +35,4 @@ WelcomeKernelMessage: db "Welcome to the Kernel", 0
 
 attr db 0x07
 
-times 1024 - ($ - $$) db 0
+times 1048576 - ($ - $$) db 0   ; 1 MB

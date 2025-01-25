@@ -51,7 +51,6 @@ $(DISK_IMG): $(STAGE1_BIN) $(STAGE2_BIN) $(KERNEL_BIN) | $(OUTPUT_DIR)
 # Run the bootloader in QEMU
 run: $(DISK_IMG)
 	$(QEMU) $(QEMU_FLAGS)
-	# qemu-system-i386 -drive format=raw,file=build/disk.img
 
 # Clean up build artifacts
 clean:

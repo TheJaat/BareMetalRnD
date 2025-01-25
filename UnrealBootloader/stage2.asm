@@ -223,7 +223,7 @@ K_DAP:
 ;;  Data Area                         ;
 ;; ********************************** ;
 BOOT_DRIVE db 0
-KERNEL_SIZE dd 2  ; two sectors
+KERNEL_SIZE dd 2024  ; 2048 sectors, means 1 MB
 VESA_LOADED db 0
 KERNEL_ENTRY dd 0x0100000
 KERNEL_ADDRESS dd 0x0100000
