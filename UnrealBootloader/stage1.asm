@@ -6,6 +6,14 @@
 ;; First stage bootloader.
 ;; DL is set by BIOS with the drive number.
 main_gate:
+    jmp start
+
+;; ****************************************
+;; Header includes
+;; ****************************************
+%include "common.inc"
+
+start:
     xor ax, ax    ; Clear the ax register
     mov ds, ax    ; Set up the data segment register
     mov ss, ax    ; Set up the stack segment register
@@ -20,9 +28,9 @@ int 0x10
 ;; By entering unreal mode, we can access memory beyond
 ;; the normal ~1mb scope and correcly relocate the kernel.
 enable_unreal_mode:
-    xor ax, ax    ; Clear out the AX register
-    mov ds, ax    ; Set up the data segment register
-    mov ss, ax    ; Set up the stack segment register
+    xor ax, ax        ; Clear out the AX register
+    mov ds, ax        ; Set up the data segment register
+    mov ss, ax        ; Set up the stack segment register
     mov sp, 0x9c00    ; 2000h past code start,
                       ; making the stack 7.5k in size
 
@@ -56,10 +64,6 @@ unreal:
     pop ds    ; get back old segment
 
 ;    sti
-
-;    mov bx, 0x0f01
-;    mov eax, 0x0b8000
-;    mov word [ds:eax], bx
     cli
 
 ; Enable a20 line
@@ -115,20 +119,20 @@ call stage_load
 ;; Load Stage 2
 stage_load:
 stage_load__:
-    mov dl, [BOOT_DRIVE]    ; Set dl to boot drive number
-    mov cl, 2               ; Sector index
-    mov ah, 0x02            ; BIOS read function
-    mov bx, 0x7e00          ; Memory location
-    mov al, 2               ; Number of sectors to read
-    mov dh, 0               ;
+    mov dl, [BOOT_DRIVE]         ; Set dl to boot drive number
+    mov cl, STAGE2_START_INDEX   ; Sector index, 2
+    mov ah, 0x02                 ; BIOS read function
+    mov bx, 0x7e00               ; Memory location
+    mov al, STAGE2_SECTORS       ; Number of sectors to read, 10
+    mov dh, 0                    ;
     mov ch, 0
-    int 0x13                ; BIOS Disk read interrupt
+    int 0x13                     ; BIOS Disk read interrupt
 
-    or ah, ah             ; error flag
-    jnz stage_load__      ; failed = hang
+    or ah, ah                    ; error flag
+    jnz stage_load__             ; failed = hang
 
-    cmp al, 2            ; how many sectors?
-    jne stage_load__      ; failed = hang
+    cmp al, STAGE2_SECTORS       ; how many sectors?
+    jne stage_load__             ; failed = hang
 
 ret
 
@@ -142,7 +146,6 @@ flatdesc:   db 0xff, 0xff, 0, 0, 0, 10010010b, 11001111b, 0
 gdt_end:
 
 WelcomeStage1Message: db "Welcome to Stage1", 0
-
 
 TIMES 510 - ($ - $$) db 0 ; Fill the rest of sector with 0
 DW 0xaa55 ; Add boot signature at the end of bootloader
