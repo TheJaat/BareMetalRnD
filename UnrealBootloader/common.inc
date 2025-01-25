@@ -6,4 +6,6 @@
 %define STAGE2_SECTORS 10
 %define STAGE2_SIZE 10 * SECTOR_SIZE
 
+%define STAGE2_MEMORY_LOCATION 0x7e00
+
 %endif

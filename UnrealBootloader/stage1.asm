@@ -13,6 +13,7 @@ main_gate:
 ;; ****************************************
 %include "common.inc"
 %include "utils16.inc"
+;; ----------------------------------------
 
 start:
     xor ax, ax    ; Clear the ax register
@@ -27,7 +28,6 @@ start:
     ;; Print the stage1 welcome message
     mov si, WelcomeStage1Message
     call PrintString16
-jmp $
 
 
 ;; By entering unreal mode, we can access memory beyond
@@ -39,7 +39,7 @@ enable_unreal_mode:
     mov sp, 0x9c00    ; 2000h past code start,
                       ; making the stack 7.5k in size
 
-    cli    ; Disable the hardware interrupts
+    cli        ; Disable the hardware interrupts
     push ds    ; Save real mode data segment 
 
     lgdt [gdtinfo]    ; Load the gdt
@@ -69,7 +69,7 @@ unreal:
     pop ds    ; get back old segment
 
 ;    sti
-    cli
+;    cli
 
 ; Enable a20 line
 enable_a20_line:
@@ -106,12 +106,8 @@ enable_a20_bios:
     a20_activated:
 
 
-mov ah, 0x0e
-mov al, '2'
-int 0x10
-
-;; Load the stage 2
-call stage_load
+    ;; Load the stage 2
+    call Stage2Load
 
 
     ;; Save the boot drive identity into the dl register
@@ -119,19 +115,22 @@ call stage_load
     mov dl, [BOOT_DRIVE]
 
     ;; Jump to stage 2
-    jmp dword 0x7e00
+    jmp dword STAGE2_MEMORY_LOCATION    ;0x7e00
 
 ;; Load Stage 2
-stage_load:
+Stage2Load:
 stage_load__:
-    mov dl, [BOOT_DRIVE]         ; Set dl to boot drive number
-    mov cl, STAGE2_START_INDEX   ; Sector index, 2
-    mov ah, 0x02                 ; BIOS read function
-    mov bx, 0x7e00               ; Memory location
-    mov al, STAGE2_SECTORS       ; Number of sectors to read, 10
-    mov dh, 0                    ;
-    mov ch, 0
-    int 0x13                     ; BIOS Disk read interrupt
+    mov dl, [BOOT_DRIVE]             ; Set dl to boot drive number
+    mov cl, STAGE2_START_INDEX       ; Sector index, 2
+    mov ah, 0x02                     ; BIOS read function
+    mov bx, STAGE2_MEMORY_LOCATION   ; Memory location where stag2 would be
+                                     ; loaded, 0x7e00
+    mov al, STAGE2_SECTORS           ; Number of sectors to read, 10
+    mov dh, 0                        ; Head number (starts at 0)
+    mov ch, 0                        ; Cylinder number (starts at 0)
+    int 0x13                         ; BIOS Disk read interrupt
+
+    jc DiskReadErrorMessage
 
     or ah, ah                    ; error flag
     jnz stage_load__             ; failed = hang
@@ -141,7 +140,12 @@ stage_load__:
 
 ret
 
-BOOT_DRIVE db 0
+DiskReadError:
+    ;; Print Error message and hlt the CPU.
+    mov si, DiskReadErrorMessage
+    call PrintString16
+    hlt
+
 
 gdtinfo:
    dw gdt_end - gdt - 1   ; last byte in table
@@ -151,7 +155,12 @@ codedesc:   db 0xff, 0xff, 0, 0, 0, 10011010b, 00000000b, 0
 flatdesc:   db 0xff, 0xff, 0, 0, 0, 10010010b, 11001111b, 0
 gdt_end:
 
+;; ****************************************************
+;; Data Variables
+;; ----------------------------------------------------
+BOOT_DRIVE db 0    ; For storing the disk identity number
 WelcomeStage1Message: db "Welcome to Stage1", 0
+DiskReadErrorMessage: db "Disk Read Error", 0
 
-TIMES 510 - ($ - $$) db 0 ; Fill the rest of sector with 0
+TIMES 510 - ($ - $$) db 0 ; Fill the rest of sector with 0, Padding
 DW 0xaa55 ; Add boot signature at the end of bootloader

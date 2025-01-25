@@ -9,13 +9,13 @@ kmain:
     ;; Print the Welcome message
     mov esi, WelcomeKernelMessage
     mov edi, 0xb8000 
-    call print_string
+    call PrintString32
 
 
 jmp $    ; Infinite loop
 
 
-print_string:
+PrintString32:
     ; Inputs: ESI = pointer to string, EDI = pointer to video memory
 .loop:
     lodsb                   ; Load a byte from [ESI] into AL, increment ESI
