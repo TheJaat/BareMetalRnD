@@ -2,9 +2,9 @@ BITS 32
 ORG 0x100000
 
 kmain:
-    ;; Print K letter
-    mov byte [0xb8000], 'K'
-    mov byte [0xb8000 + 1], 0x07
+    ;; Debugging purposes, Print K letter
+;    mov byte [0xb8000], 'K'
+;    mov byte [0xb8000 + 1], attr
 
     ;; Print the Welcome message
     mov esi, WelcomeKernelMessage

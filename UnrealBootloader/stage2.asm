@@ -28,7 +28,7 @@ stage2_entry:
     ;; The word trampoline used in specific situations such as
     ;; transitioning between different modes
     ;; Here it transitions to 32 bit mode
-    call trampoline
+    call Trampoline
 
 jmp $
 
@@ -81,6 +81,7 @@ kernel_load__:
 ret                                    ; Return to the caller
 
 .error:
+    ; Print the error message
     mov si, KernelLoadingFailureMessage
     call PrintString16
     hlt
@@ -123,7 +124,7 @@ RelocateKernel:
 ret
 
 
-trampoline:
+Trampoline:
     ;; Set the ds register
     cli
     xor ax, ax
@@ -138,11 +139,11 @@ trampoline:
     mov cr0, eax
 
     ; Go to 32-bit code
-    jmp 0x08:trampoline32
+    jmp 0x08:Trampoline32
 
 [BITS 32]
 ;; 32 Bit land
-trampoline32:
+Trampoline32:
     ; Set segment registers
     mov ax, 0x10
     mov es, ax
