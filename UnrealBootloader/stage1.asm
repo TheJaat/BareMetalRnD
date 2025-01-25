@@ -12,6 +12,7 @@ main_gate:
 ;; Header includes
 ;; ****************************************
 %include "common.inc"
+%include "utils16.inc"
 
 start:
     xor ax, ax    ; Clear the ax register
@@ -19,6 +20,9 @@ start:
     mov ss, ax    ; Set up the stack segment register
     mov sp, 0x7c00 ; Set the stack pointer
     mov [BOOT_DRIVE], dl    ; Save disk identity number to variable
+
+    ;; Clear the screen
+    call ClearScreen
 
 mov ah, 0x0e
 mov al, '1'
@@ -137,6 +141,7 @@ stage_load__:
 ret
 
 BOOT_DRIVE db 0
+
 gdtinfo:
    dw gdt_end - gdt - 1   ; last byte in table
    dd gdt                 ; start of table

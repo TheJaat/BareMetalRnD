@@ -13,6 +13,8 @@ KERNEL_BIN = $(OUTPUT_DIR)/kernel.bin
 
 DISK_IMG   = $(OUTPUT_DIR)/disk.img
 
+UTILS_INCLUDE = utils/
+
 QEMU       = qemu-system-x86_64
 QEMU_FLAGS = -drive format=raw,file=$(DISK_IMG)
 
@@ -27,11 +29,11 @@ $(OUTPUT_DIR):
 
 # Compile stage1
 $(STAGE1_BIN): $(STAGE1_SRC) | $(OUTPUT_DIR)
-	$(ASM) $(ASFLAGS) -o $@ $<
+	$(ASM) $(ASFLAGS) -I$(UTILS_INCLUDE) -o $@ $<
 
 # Compile stage2
 $(STAGE2_BIN): $(STAGE2_SRC) | $(OUTPUT_DIR)
-	$(ASM) $(ASFLAGS) -o $@ $<
+	$(ASM) $(ASFLAGS) -I$(UTILS_INCLUDE) -o $@ $<
 
 # Compile kernel.bin
 $(KERNEL_BIN) : $(KERNEL_SRC) | $(OUTPUT_DIR)
