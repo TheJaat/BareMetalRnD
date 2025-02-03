@@ -89,13 +89,13 @@
      0                                   ;;; %define __?SECT?__ [section .text]
      0                                   ;;; %define __?DATE?__ "2025-02-03"
      0                                   ;;; %define __?DATE_NUM?__ 20250203
-     0                                   ;;; %define __?TIME?__ "23:33:13"
-     0                                   ;;; %define __?TIME_NUM?__ 233313
+     0                                   ;;; %define __?TIME?__ "23:37:45"
+     0                                   ;;; %define __?TIME_NUM?__ 233745
      0                                   ;;; %define __?UTC_DATE?__ "2025-02-03"
      0                                   ;;; %define __?UTC_DATE_NUM?__ 20250203
-     0                                   ;;; %define __?UTC_TIME?__ "18:03:13"
-     0                                   ;;; %define __?UTC_TIME_NUM?__ 180313
-     0                                   ;;; %define __?POSIX_TIME?__ 1738605793
+     0                                   ;;; %define __?UTC_TIME?__ "18:07:45"
+     0                                   ;;; %define __?UTC_TIME_NUM?__ 180745
+     0                                   ;;; %define __?POSIX_TIME?__ 1738606065
      0                                   ;;; %define __?OUTPUT_FORMAT?__ bin
      1                                  BITS 32
      2                                  ORG 0x7e00

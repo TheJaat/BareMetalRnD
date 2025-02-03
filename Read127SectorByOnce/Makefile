@@ -21,7 +21,7 @@ QEMU_FLAGS = -drive format=raw,file=$(DISK_IMG)
 .PHONY: all clean run
 
 # Default target
-all: $(OUTPUT_DIR) $(STAGE1_BIN) $(STAGE2_BIN) $(KERNEL_BIN) $(DISK_IMG)
+all: $(OUTPUT_DIR) $(STAGE1_BIN) $(STAGE2_BIN) $(DISK_IMG)
 
 # Create the build directory if it doesn't exist
 $(OUTPUT_DIR):
