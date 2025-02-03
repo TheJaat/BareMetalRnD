@@ -1,0 +1,140 @@
+     0                                   ;;; %define __?FILE?__ 
+     0                                   ;;; %define __?LINE?__ 
+     0                                   ;;; %define __?BITS?__ 
+     0                                   ;;; %define __?PTR?__ 
+     0                                   ;;; %define __?PASS?__ 2
+     0                                   ;;; %define __?SECT?__ 
+     0                                   ;;; %defalias __SECT__ __?SECT?__
+     0                                   ;;; %define __?SECTALIGN_ALIGN_UPDATES_SECTION?__ 1
+     0                                   ;;; %defalias __SECTALIGN_ALIGN_UPDATES_SECTION__ __?SECTALIGN_ALIGN_UPDATES_SECTION?__
+     0                                   ;;; %define __?FLOAT_DAZ?__ nodaz
+     0                                   ;;; %define __?FLOAT_ROUND?__ near
+     0                                   ;;; %define __?FLOAT?__ __?FLOAT_DAZ?__,__?FLOAT_ROUND?__
+     0                                   ;;; %defalias __FLOAT_DAZ__ __?FLOAT_DAZ?__
+     0                                   ;;; %defalias __FLOAT_ROUND__ __?FLOAT_ROUND?__
+     0                                   ;;; %defalias __FLOAT__ __?FLOAT?__
+     0                                   ;;; %defalias __NASM_MAJOR__ __?NASM_MAJOR?__
+     0                                   ;;; %defalias __NASM_MINOR__ __?NASM_MINOR?__
+     0                                   ;;; %defalias __NASM_SUBMINOR__ __?NASM_SUBMINOR?__
+     0                                   ;;; %defalias __NASM_PATCHLEVEL__ __?NASM_PATCHLEVEL?__
+     0                                   ;;; %defalias __NASM_SNAPSHOT__ __?NASM_SNAPSHOT?__
+     0                                   ;;; %defalias __NASM_VERSION_ID__ __?NASM_VERSION_ID?__
+     0                                   ;;; %defalias __NASM_VER__ __?NASM_VER?__
+     0                                   ;;; %defalias __OUTPUT_FORMAT__ __?OUTPUT_FORMAT?__
+     0                                   ;;; %defalias __DEBUG_FORMAT__ __?DEBUG_FORMAT?__
+     0                                   ;;; %defalias __DATE__ __?DATE?__
+     0                                   ;;; %defalias __DATE_NUM__ __?DATE_NUM?__
+     0                                   ;;; %defalias __TIME__ __?TIME?__
+     0                                   ;;; %defalias __TIME_NUM__ __?TIME_NUM?__
+     0                                   ;;; %defalias __UTC_DATE__ __?UTC_DATE?__
+     0                                   ;;; %defalias __UTC_DATE_NUM__ __?UTC_DATE_NUM?__
+     0                                   ;;; %defalias __UTC_TIME__ __?UTC_TIME?__
+     0                                   ;;; %defalias __UTC_TIME_NUM__ __?UTC_TIME_NUM?__
+     0                                   ;;; %defalias __POSIX_TIME__ __?POSIX_TIME?__
+     0                                   ;;; %defalias __FILE__ __?FILE?__
+     0                                   ;;; %defalias __LINE__ __?LINE?__
+     0                                   ;;; %defalias __BITS__ __?BITS?__
+     0                                   ;;; %defalias __PTR__ __?PTR?__
+     0                                   ;;; %defalias __PASS__ __?PASS?__
+     0                                   ;;; %idefine __?infinity?__ %?
+     0                                   ;;; %idefine __?nan?__ %?
+     0                                   ;;; %idefine __?qnan?__ %?
+     0                                   ;;; %idefine __?snan?__ %?
+     0                                   ;;; %idefine __?float8?__ %?
+     0                                   ;;; %idefine __?float16?__ %?
+     0                                   ;;; %idefine __?float32?__ %?
+     0                                   ;;; %idefine __?float64?__ %?
+     0                                   ;;; %idefine __?float80m?__ %?
+     0                                   ;;; %idefine __?float80e?__ %?
+     0                                   ;;; %idefine __?float128l?__ %?
+     0                                   ;;; %idefine __?float128h?__ %?
+     0                                   ;;; %idefine __?utf16?__ %?
+     0                                   ;;; %idefine __?utf16le?__ %?
+     0                                   ;;; %idefine __?utf16be?__ %?
+     0                                   ;;; %idefine __?utf32?__ %?
+     0                                   ;;; %idefine __?utf32le?__ %?
+     0                                   ;;; %idefine __?utf32be?__ %?
+     0                                   ;;; %idefine __?ilog2e?__ %?
+     0                                   ;;; %idefine __?ilog2w?__ %?
+     0                                   ;;; %idefine __?ilog2f?__ %?
+     0                                   ;;; %idefine __?ilog2c?__ %?
+     0                                   ;;; %idefalias __infinity__ __?infinity?__
+     0                                   ;;; %idefalias __nan__ __?nan?__
+     0                                   ;;; %idefalias __qnan__ __?qnan?__
+     0                                   ;;; %idefalias __snan__ __?snan?__
+     0                                   ;;; %idefalias __float8__ __?float8?__
+     0                                   ;;; %idefalias __float16__ __?float16?__
+     0                                   ;;; %idefalias __float32__ __?float32?__
+     0                                   ;;; %idefalias __float64__ __?float64?__
+     0                                   ;;; %idefalias __float80m__ __?float80m?__
+     0                                   ;;; %idefalias __float80e__ __?float80e?__
+     0                                   ;;; %idefalias __float128l__ __?float128l?__
+     0                                   ;;; %idefalias __float128h__ __?float128h?__
+     0                                   ;;; %idefalias __utf16__ __?utf16?__
+     0                                   ;;; %idefalias __utf16le__ __?utf16le?__
+     0                                   ;;; %idefalias __utf16be__ __?utf16be?__
+     0                                   ;;; %idefalias __utf32__ __?utf32?__
+     0                                   ;;; %idefalias __utf32le__ __?utf32le?__
+     0                                   ;;; %idefalias __utf32be__ __?utf32be?__
+     0                                   ;;; %idefalias __ilog2e__ __?ilog2e?__
+     0                                   ;;; %idefalias __ilog2w__ __?ilog2w?__
+     0                                   ;;; %idefalias __ilog2f__ __?ilog2f?__
+     0                                   ;;; %idefalias __ilog2c__ __?ilog2c?__
+     0                                   ;;; %define __?NASM_MAJOR?__ 2
+     0                                   ;;; %define __?NASM_MINOR?__ 15
+     0                                   ;;; %define __?NASM_SUBMINOR?__ 5
+     0                                   ;;; %define __?NASM_PATCHLEVEL?__ 0
+     0                                   ;;; %define __?NASM_VERSION_ID?__ 0020F0500h
+     0                                   ;;; %define __?NASM_VER?__ "2.15.05"
+     0                                   ;;; %define __?SECT?__ [section .text]
+     0                                   ;;; %define __?DATE?__ "2025-02-03"
+     0                                   ;;; %define __?DATE_NUM?__ 20250203
+     0                                   ;;; %define __?TIME?__ "23:33:13"
+     0                                   ;;; %define __?TIME_NUM?__ 233313
+     0                                   ;;; %define __?UTC_DATE?__ "2025-02-03"
+     0                                   ;;; %define __?UTC_DATE_NUM?__ 20250203
+     0                                   ;;; %define __?UTC_TIME?__ "18:03:13"
+     0                                   ;;; %define __?UTC_TIME_NUM?__ 180313
+     0                                   ;;; %define __?POSIX_TIME?__ 1738605793
+     0                                   ;;; %define __?OUTPUT_FORMAT?__ bin
+     1                                  BITS 32
+     2                                  ORG 0x7e00
+     3                                  
+     4                                  stage2:
+     5                                      ; Set up segment registers
+     6 00000000 66B81000                    mov ax, 0x10
+     7 00000004 8ED8                        mov ds, ax
+     8 00000006 8EC0                        mov es, ax
+     9                                  
+    10                                      ; Set up the stack
+    11 00000008 BC007C0000                  mov esp, 0x7c00    ; Stack grows downward from 0x7c00
+    12                                  
+    13 0000000D BE[2A000000]                mov esi, message
+    14 00000012 E802000000                  call print_string
+    15                                  
+    16                                      ; Halt the CPU
+    17 00000017 FA                          cli
+    18 00000018 F4                          hlt
+    19                                  
+    20                                  print_string:
+    21 00000019 BF00800B00                  mov edi, 0xB8000
+    22 0000001E B40F                        mov ah, 0x0f
+    23                                  
+    24                                      .print_loop:
+    25 00000020 AC                              lodsb
+    26 00000021 08C0                            or al, al
+    27 00000023 7404                            jz .done
+    28                                          
+    29 00000025 66AB                            stosw
+    30 00000027 EBF7                            jmp .print_loop
+    31                                      .done:
+    32 00000029 C3                              ret
+    33                                  
+    34                                  ;times 512*127*10 - ($ - $$) db 0
+    35                                  
+    36 0000002A 48656C6C6F2C203332-     message db "Hello, 32-bit Protected Mode!", 0
+    36 00000033 2D6269742050726F74-
+    36 0000003C 6563746564204D6F64-
+    36 00000045 652100             
+    37                                  
+    38 00000048 00<rep 9EBB8h>          times 512*127*10 - ($- $$) db 0

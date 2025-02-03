@@ -1,0 +1,11 @@
+%ifndef __COMMON_INC_
+%define __COMMON_INC_
+
+%define STAGE2_START_INDEX 2
+%define SECTOR_SIZE 512
+%define STAGE2_SECTORS 10
+%define STAGE2_SIZE 10 * SECTOR_SIZE
+
+%define STAGE2_MEMORY_LOCATION 0x7e00
+
+%endif
