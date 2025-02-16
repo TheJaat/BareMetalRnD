@@ -46,3 +46,6 @@ make clean
 - hello.efi is a PE64 UEFI executable, created directly by fasm.
 - QEMU boots using OVMF, an open-source UEFI firmware.
 - The build/ folder acts a virtual FAT partition.
+
+## Output
+![Screenshot of UEFI Hello World](screenshot.png)
