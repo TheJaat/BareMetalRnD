@@ -50,12 +50,12 @@ start:
     call print_string
 
     ; Our file table is a single FileEntry:
-    ; FileEntry structure: 8-byte filename, then 1 byte for start_sector.
+    ; FileEntry structure: 11-byte filename, then 1 byte for start_sector.
     ; Get the start sector from offset 8.
     mov cl, byte [BUFFER + 11]
 
     ; --- Read the File Data from the indicated sector ---
-    mov bx, BUFFER
+    mov bx, BUFFER + 512
     mov al, 1         ; read 1 sector
     mov ch, 0
     ; cl already holds the file data sector number (from the file table)
@@ -64,7 +64,7 @@ start:
     call disk_read
 
     ; --- Print the file contents (assumed to be a null-terminated string) ---
-    mov si, BUFFER
+    mov si, BUFFER + 512
     call print_string
 
 halt:
@@ -86,11 +86,15 @@ print_string:
 
 ;---------------------------
 ; disk_read: reads sectors from disk using BIOS interrupt 0x13.
-; Expected registers before call:
+; Input:
 ;   BX = buffer address (physical address; here we use 0x7E00)
 ;   AL = number of sectors to read
-;   CH = cylinder, CL = sector, DH = head, DL = drive
+;   CH = cylinder, CL = sector (1-based indexing)
+;   DH = head, DL = drive
 ;---------------------------
+;   BIOS interrupt 0x13 in CHS (Cylinder-Head-Sector) mode,
+;   the sector number is 1‑based—meaning the first sector on a track is
+;   numbered 1 rather than 0. In contrast, cylinders and heads are 0‑indexed.
 disk_read:
     push ax
     push bx

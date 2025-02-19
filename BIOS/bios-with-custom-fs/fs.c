@@ -45,18 +45,20 @@ void create_filesystem(const char *bootloader, const char *disk_image) {
         // If bootloader is less than 512 bytes, pad with 0.
         memset(bootloader_data + bytes, 0, SECTOR_SIZE - bytes);
     }
+    // Write the bootloader
     fwrite(bootloader_data, SECTOR_SIZE, 1, fp);
     fclose(bl);
 
     // --- Sector 1: Write the Superblock ---
-    Superblock sb = {FS_MAGIC, TOTAL_SECTORS, 2};  // file table is in sector 2
+    Superblock sb = {FS_MAGIC, TOTAL_SECTORS, 2};  // file table is in sector 2 (0-based)
     uint8_t sector[SECTOR_SIZE] = {0};
     memcpy(sector, &sb, sizeof(Superblock));
     fwrite(sector, SECTOR_SIZE, 1, fp);
 
     // --- Sector 2: Write the File Table ---
     // We add one file entry for "hello.txt" whose data is in sector 3.
-    FileEntry file = {"hello.txt", 3};
+    FileEntry file = {"hello.txt", 4};  // Here 4 is for the Bootloader which
+                                        // uses 1-based sector indexing in CHS.
     memset(sector, 0, SECTOR_SIZE);
     memcpy(sector, &file, sizeof(FileEntry));
     fwrite(sector, SECTOR_SIZE, 1, fp);
